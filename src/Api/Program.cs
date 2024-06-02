@@ -68,8 +68,8 @@ builder.Services.AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationSc
 builder.Services.AddDbContext<ConduitContext>(options => { options.UseSqlite(connection); });
 ProblemDetailsExtensions.AddProblemDetails(builder.Services);
 builder.Services.ConfigureOptions<ProblemDetailsLogging>();
-
 var app = builder.Build();
+app.UsePathBase("/api");
 
 // Configure the HTTP request pipeline.
 Log.Information("Start configuring http request pipeline");
@@ -88,7 +88,7 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "realworlddotnet v1"));
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/api/swagger/v1/swagger.json", "realworlddotnet v1"));
 
 try
 {
