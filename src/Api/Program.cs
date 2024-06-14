@@ -12,7 +12,7 @@ builder.Host.UseSerilog((hostBuilderContext, services, loggerConfiguration) =>
 #pragma warning disable S125
 // to use a file based SQLite use: "Filename=../realworld.db";
 #pragma warning restore S125
-const string connectionString = "Filename=:memory:";
+const string connectionString = "Filename=./db/realworld.db";
 var connection = new SqliteConnection(connectionString);
 connection.Open();
 
