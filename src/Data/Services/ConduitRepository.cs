@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -56,15 +56,21 @@ public class ConduitRepository(ConduitContext context) : IConduitRepository
     {
         var dbTags = await context.Tags.Where(x => tags.Contains(x.Id)).ToListAsync(cancellationToken);
 
+        bool didCreateNewTag = false;
         foreach (var tag in tags)
         {
             if (!dbTags.Exists(x => x.Id == tag))
             {
                 context.Tags.Add(new Tag(tag));
+                didCreateNewTag = true;
             }
         }
-
-        return context.Tags;
+        if (didCreateNewTag)
+        {
+            context.SaveChanges();
+            dbTags = await context.Tags.Where(x => tags.Contains(x.Id)).ToListAsync(cancellationToken);
+        }
+        return dbTags;
     }
 
     public async Task SaveChangesAsync(CancellationToken cancellationToken)
