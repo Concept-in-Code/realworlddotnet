@@ -24,6 +24,7 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
         ArticleUpdateDto update, string slug, string username, CancellationToken cancellationToken)
     {
         var article = await repository.GetArticleBySlugAsync(slug, false, cancellationToken);
+        var tags = await repository.UpsertTagsAsync(update.TagList, cancellationToken);
 
         if (article == null)
         {
@@ -41,7 +42,11 @@ public class ArticlesHandler(IConduitRepository repository) : IArticlesHandler
             });
         }
 
-        article.UpdateArticle(update);
+        article.UpdateArticle(new Article(
+            update.Title,
+            update.Description,
+            update.Body
+        ) { Tags = tags.ToList() });
         await repository.SaveChangesAsync(cancellationToken);
         return article;
     }

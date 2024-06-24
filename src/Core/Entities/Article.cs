@@ -16,7 +16,7 @@ public class Article(string title, string description, string body)
     public List<Comment> Comments { get; set; } = new();
     public ICollection<ArticleFavorite> ArticleFavorites { get; set; } = new List<ArticleFavorite>();
 
-    public void UpdateArticle(ArticleUpdateDto update)
+    public void UpdateArticle(Article update)
     {
         if (!string.IsNullOrWhiteSpace(update.Title))
         {
@@ -35,5 +35,7 @@ public class Article(string title, string description, string body)
         }
 
         UpdatedAt = DateTimeOffset.UtcNow;
+
+        Tags = update.Tags;
     }
 }

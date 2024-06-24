@@ -2,7 +2,7 @@ namespace Realworlddotnet.Core.Dto;
 
 public record NewArticleDto(string Title, string Description, string Body, IEnumerable<string> TagList);
 
-public record ArticleUpdateDto(string? Title, string? Description, string? Body) : IValidatableObject
+public record ArticleUpdateDto(string Title, string Description, string Body, IEnumerable<string> TagList) : IValidatableObject
 {
     public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
     {
